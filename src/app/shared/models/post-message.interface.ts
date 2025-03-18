@@ -1,5 +1,6 @@
 export interface PostMessage {
-  id: string;
+  id?: string;
   email: string;
   message: string;
+  createdAt: any;
 }
