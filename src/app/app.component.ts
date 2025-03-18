@@ -1,10 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
 import { PostMessageFirebaseService } from './shared/services/post-message/post-message-firebase.service';
+
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatToolbarModule } from '@angular/material/toolbar';
+
+const MaterialModule = [MatToolbarModule, MatIconModule, MatButtonModule];
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
+  imports: [MatToolbarModule, MatButtonModule, MatIconModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
