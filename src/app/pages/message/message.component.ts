@@ -2,7 +2,6 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit, inject } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { ListMessageComponent } from '../../shared/components/list-message/list-message.component';
-import { PostMessage } from '../../shared/models/post-message.interface';
 import { postMessageAction } from '../../store/actions/post-message.action';
 import { postMessageSelector } from '../../store/selectors/post-message.selector';
 
@@ -17,7 +16,6 @@ const CoreModule = [CommonModule];
   standalone: true,
 })
 export class MessageComponent implements OnInit {
-  postMessage: PostMessage[] = [];
   store = inject(Store);
   postMessage$ = this.store.select(postMessageSelector);
 

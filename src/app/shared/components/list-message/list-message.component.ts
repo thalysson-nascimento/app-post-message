@@ -2,6 +2,7 @@ import {
   AfterViewInit,
   ChangeDetectionStrategy,
   Component,
+  Input,
   OnInit,
   ViewChild,
   inject,
@@ -72,8 +73,13 @@ const ELEMENT_DATA: PeriodicElement[] = [
   standalone: true,
 })
 export class ListMessageComponent implements AfterViewInit {
+  @Input() set messageList(messages: PostMessage[] | null) {
+    if (messages) {
+      this.dataSource.data = messages;
+    }
+  }
   displayedColumns: string[] = ['userId', 'email', 'message', 'date'];
-  dataSource = new MatTableDataSource<PeriodicElement>(ELEMENT_DATA);
+  dataSource = new MatTableDataSource<PostMessage>([]);
   readonly animal = signal('');
   readonly name = model('');
   readonly dialog = inject(MatDialog);
