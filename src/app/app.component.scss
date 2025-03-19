@@ -1,12 +1,15 @@
-.example-button-row {
-  display: table-cell;
-  max-width: 600px;
-}
-
-section {
-  display: table;
+.container {
+  max-width: 980px;
+  width: 100%;
+  margin: 0 auto;
 }
 
 .space-left {
   margin-left: 10px;
+}
+
+.contain-body {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 16px;
 }

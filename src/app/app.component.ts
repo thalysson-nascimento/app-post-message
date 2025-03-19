@@ -2,14 +2,25 @@ import { Component, OnInit } from '@angular/core';
 import { PostMessageFirebaseService } from './shared/services/post-message/post-message-firebase.service';
 
 import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
+import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { RouterModule, RouterOutlet } from '@angular/router';
 
-const MaterialModule = [MatToolbarModule, MatIconModule, MatButtonModule];
+const MaterialModule = [
+  MatToolbarModule,
+  MatIconModule,
+  MatButtonModule,
+  MatSidenavModule,
+  MatCardModule,
+];
+
+const CoreModule = [RouterOutlet, RouterModule];
 
 @Component({
   selector: 'app-root',
-  imports: [MatToolbarModule, MatButtonModule, MatIconModule],
+  imports: [...MaterialModule, ...CoreModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
