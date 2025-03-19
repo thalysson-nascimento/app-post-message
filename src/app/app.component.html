@@ -1,12 +1,13 @@
-<mat-toolbar color="primary">
+<mat-toolbar>
   <span>Post Message</span>
-
   <section class="space-left">
     <div class="example-button-row">
-      <button mat-button>Home</button>
-      <a mat-button href="https://www.google.com/" target="_blank"
-        >Post Message</a
-      >
+      <button mat-button [routerLink]="['/home']">Home</button>
+      <button mat-button [routerLink]="['/message']">Post Message</button>
     </div>
   </section>
 </mat-toolbar>
+
+<div class="contain-body">
+  <router-outlet></router-outlet>
+</div>

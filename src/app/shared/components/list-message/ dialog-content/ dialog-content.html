@@ -1,0 +1,48 @@
+<h2 mat-dialog-title>Send your message</h2>
+<form [formGroup]="createMessageFormGroup" (submit)="sendMessage()">
+  <mat-dialog-content>
+    <div class="example-container">
+      <mat-form-field>
+        <mat-label>Enter your email</mat-label>
+        <input
+          matInput
+          placeholder="pat@example.com"
+          formControlName="email"
+          required
+        />
+      </mat-form-field>
+      <div class="example-container">
+        <mat-form-field hintLabel="Max 100 characters">
+          <mat-label>Enter your message</mat-label>
+          <textarea
+            matInput
+            formControlName="message"
+            placeholder="message"
+            maxlength="100"
+            (input)="onInput($event)"
+          ></textarea>
+          <mat-hint align="end">{{value().length}}/100</mat-hint>
+        </mat-form-field>
+      </div>
+    </div>
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    @if (isLoadning) {
+    <mat-dialog-actions class="spinner-container">
+      <mat-spinner [diameter]="30"></mat-spinner>
+    </mat-dialog-actions>
+
+    }@else {
+
+    <button mat-button (click)="onNoClick()">No Thanks</button>
+    <button
+      type="submit"
+      [disabled]="disabledButton || createMessageFormGroup.invalid"
+      mat-button
+      cdkFocusInitial
+    >
+      Send
+    </button>
+    }
+  </mat-dialog-actions>
+</form>
