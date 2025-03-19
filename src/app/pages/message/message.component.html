@@ -1,1 +1,4 @@
 <app-list-message> </app-list-message>
+<p *ngFor="let item of postMessage$ | async; let i = index">
+  {{ item.email }}
+</p>

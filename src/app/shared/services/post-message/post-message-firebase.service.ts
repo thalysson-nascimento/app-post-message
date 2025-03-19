@@ -30,8 +30,8 @@ export class PostMessageFirebaseService {
     }) as Observable<PostMessage[]>;
   }
 
-  async createPostMessage(postMessage: PostMessage) {
-    return await addDoc(this.postMessageCollection, postMessage);
+  async createPostMessage(postMessage: PostMessage): Promise<void> {
+    return addDoc(this.postMessageCollection, postMessage).then(() => {});
   }
 
   async updatePostMessage(id: string, updateData: Partial<PostMessage>) {

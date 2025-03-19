@@ -35,6 +35,9 @@ import {
   ProgressSpinnerMode,
 } from '@angular/material/progress-spinner';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { Store } from '@ngrx/store';
+import { postMessageAction } from '../../../store/actions/post-message.action';
+import { PostMessage } from '../../models/post-message.interface';
 
 export interface PeriodicElement {
   userId: string;
@@ -124,7 +127,7 @@ export class DialogContent implements OnInit {
   valueSpinner = 50;
   isLoadning: boolean = false;
 
-  constructor(private formBuilder: FormBuilder) {}
+  constructor(private formBuilder: FormBuilder, private store: Store) {}
 
   ngOnInit(): void {
     this.createPostMessageFromBuild();
@@ -142,12 +145,20 @@ export class DialogContent implements OnInit {
   }
 
   sendMessage() {
-    const formIsValid = this.createMessageFormGroup.valid;
-    if (formIsValid) {
-      console.log(this.createMessageFormGroup.value);
-      this.isLoadning = true;
-      // this.dialogRef.disableClose = true;
-      // this.dialogRef.close();
+    if (this.createMessageFormGroup.valid) {
+      const { email, message } = this.createMessageFormGroup.value;
+
+      const newPostMessage: PostMessage = {
+        email,
+        message,
+        createdAt: new Date().toISOString(),
+      };
+
+      this.store.dispatch(
+        postMessageAction.createPostMessage({ postMessage: newPostMessage })
+      );
+
+      this.dialogRef.close();
     }
   }
 
