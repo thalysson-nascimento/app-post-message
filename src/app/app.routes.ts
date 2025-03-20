@@ -9,7 +9,7 @@ export const routes: Routes = [
   {
     path: 'home',
     loadComponent: () =>
-      import('./pages/home/home.component').then((m) => m.HomeComponent), // Lazy loading do HomeModule
+      import('./pages/home/home.component').then((m) => m.HomeComponent),
   },
   {
     path: 'message',
@@ -17,5 +17,10 @@ export const routes: Routes = [
       import('./pages/message/message.component').then(
         (m) => m.MessageComponent
       ),
+  },
+  {
+    path: '**',
+    redirectTo: 'home',
+    pathMatch: 'full',
   },
 ];

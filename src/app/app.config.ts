@@ -3,7 +3,15 @@ import { provideRouter } from '@angular/router';
 
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
+import { provideEffects } from '@ngrx/effects';
+import { provideStore } from '@ngrx/store';
 import { routes } from './app.routes';
+import { appReducers } from './state/app.reducers';
+import {
+  createPostMessageEffect,
+  searchPostMessageEffect,
+  showSuccessSnackbarEffect,
+} from './store/effects/post-message.effect';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyC4acEcFWoon4T8qa6LuEdJAs5FLkY-94I',
@@ -20,5 +28,11 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     provideFirebaseApp(() => initializeApp(firebaseConfig)),
     provideFirestore(() => getFirestore()),
+    provideStore(appReducers),
+    provideEffects({
+      searchPostMessageEffect,
+      createPostMessageEffect,
+      showSuccessSnackbarEffect,
+    }),
   ],
 };

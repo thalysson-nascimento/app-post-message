@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { PostMessageFirebaseService } from './shared/services/post-message/post-message-firebase.service';
 
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -27,17 +26,7 @@ const CoreModule = [RouterOutlet, RouterModule];
 export class AppComponent implements OnInit {
   title = 'app-post-message';
 
-  constructor(private postMessageFirebaseService: PostMessageFirebaseService) {}
+  constructor() {}
 
-  ngOnInit(): void {
-    this.loadPostMessage();
-  }
-
-  loadPostMessage() {
-    this.postMessageFirebaseService.getPostMessage().subscribe({
-      next: (response) => {
-        console.log('===>', response);
-      },
-    });
-  }
+  ngOnInit(): void {}
 }

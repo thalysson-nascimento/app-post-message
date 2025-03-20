@@ -1,7 +1,9 @@
+import { DatePipe } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
   Component,
+  Input,
   OnInit,
   ViewChild,
   inject,
@@ -35,13 +37,9 @@ import {
   ProgressSpinnerMode,
 } from '@angular/material/progress-spinner';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-
-export interface PeriodicElement {
-  userId: string;
-  email: string;
-  message: string;
-  date: number;
-}
+import { Store } from '@ngrx/store';
+import { postMessageAction } from '../../../store/actions/post-message.action';
+import { PostMessage } from '../../models/post-message.interface';
 
 export interface DialogData {
   animal: string;
@@ -56,21 +54,23 @@ const MaterialModule = [
   MatDialogModule,
 ];
 
-const ELEMENT_DATA: PeriodicElement[] = [
-  { userId: '1', email: 'Hydrogen', message: '1.0079', date: 1742319199 },
-  { userId: '2', email: 'Helium', message: '4.0026', date: 1742319199 },
-];
+const CoreModule = [DatePipe];
 
 @Component({
   selector: 'app-list-message',
   templateUrl: './list-message.component.html',
   styleUrls: ['./list-message.component.scss'],
-  imports: [...MaterialModule],
+  imports: [...MaterialModule, ...CoreModule],
   standalone: true,
 })
 export class ListMessageComponent implements AfterViewInit {
+  @Input() set messageList(messages: PostMessage[] | null) {
+    if (messages) {
+      this.dataSource.data = messages;
+    }
+  }
   displayedColumns: string[] = ['userId', 'email', 'message', 'date'];
-  dataSource = new MatTableDataSource<PeriodicElement>(ELEMENT_DATA);
+  dataSource = new MatTableDataSource<PostMessage>([]);
   readonly animal = signal('');
   readonly name = model('');
   readonly dialog = inject(MatDialog);
@@ -82,9 +82,7 @@ export class ListMessageComponent implements AfterViewInit {
   }
 
   openDialog(): void {
-    const dialogRef = this.dialog.open(DialogContent, {
-      data: { name: this.name(), animal: this.animal() },
-    });
+    const dialogRef = this.dialog.open(DialogContent);
 
     dialogRef.afterClosed().subscribe((result) => {
       console.log('The dialog was closed');
@@ -124,7 +122,7 @@ export class DialogContent implements OnInit {
   valueSpinner = 50;
   isLoadning: boolean = false;
 
-  constructor(private formBuilder: FormBuilder) {}
+  constructor(private formBuilder: FormBuilder, private store: Store) {}
 
   ngOnInit(): void {
     this.createPostMessageFromBuild();
@@ -142,12 +140,20 @@ export class DialogContent implements OnInit {
   }
 
   sendMessage() {
-    const formIsValid = this.createMessageFormGroup.valid;
-    if (formIsValid) {
-      console.log(this.createMessageFormGroup.value);
-      this.isLoadning = true;
-      // this.dialogRef.disableClose = true;
-      // this.dialogRef.close();
+    if (this.createMessageFormGroup.valid) {
+      const { email, message } = this.createMessageFormGroup.value;
+
+      const newPostMessage: PostMessage = {
+        email,
+        message,
+        createdAt: new Date().toISOString(),
+      };
+
+      this.store.dispatch(
+        postMessageAction.createPostMessage({ postMessage: newPostMessage })
+      );
+
+      this.dialogRef.close();
     }
   }
 
