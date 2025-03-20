@@ -10,6 +10,7 @@ import { appReducers } from './state/app.reducers';
 import {
   createPostMessageEffect,
   searchPostMessageEffect,
+  showSuccessSnackbarEffect,
 } from './store/effects/post-message.effect';
 
 const firebaseConfig = {
@@ -28,6 +29,10 @@ export const appConfig: ApplicationConfig = {
     provideFirebaseApp(() => initializeApp(firebaseConfig)),
     provideFirestore(() => getFirestore()),
     provideStore(appReducers),
-    provideEffects({ searchPostMessageEffect, createPostMessageEffect }),
+    provideEffects({
+      searchPostMessageEffect,
+      createPostMessageEffect,
+      showSuccessSnackbarEffect,
+    }),
   ],
 };

@@ -1,3 +1,4 @@
+import { DatePipe } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -40,13 +41,6 @@ import { Store } from '@ngrx/store';
 import { postMessageAction } from '../../../store/actions/post-message.action';
 import { PostMessage } from '../../models/post-message.interface';
 
-export interface PeriodicElement {
-  userId: string;
-  email: string;
-  message: string;
-  date: number;
-}
-
 export interface DialogData {
   animal: string;
   name: string;
@@ -60,16 +54,13 @@ const MaterialModule = [
   MatDialogModule,
 ];
 
-const ELEMENT_DATA: PeriodicElement[] = [
-  { userId: '1', email: 'Hydrogen', message: '1.0079', date: 1742319199 },
-  { userId: '2', email: 'Helium', message: '4.0026', date: 1742319199 },
-];
+const CoreModule = [DatePipe];
 
 @Component({
   selector: 'app-list-message',
   templateUrl: './list-message.component.html',
   styleUrls: ['./list-message.component.scss'],
-  imports: [...MaterialModule],
+  imports: [...MaterialModule, ...CoreModule],
   standalone: true,
 })
 export class ListMessageComponent implements AfterViewInit {
@@ -91,9 +82,7 @@ export class ListMessageComponent implements AfterViewInit {
   }
 
   openDialog(): void {
-    const dialogRef = this.dialog.open(DialogContent, {
-      data: { name: this.name(), animal: this.animal() },
-    });
+    const dialogRef = this.dialog.open(DialogContent);
 
     dialogRef.afterClosed().subscribe((result) => {
       console.log('The dialog was closed');
@@ -159,6 +148,10 @@ export class DialogContent implements OnInit {
         message,
         createdAt: new Date().toISOString(),
       };
+
+      this.store.dispatch(
+        postMessageAction.createPostMessage({ postMessage: newPostMessage })
+      );
 
       this.store.dispatch(
         postMessageAction.createPostMessage({ postMessage: newPostMessage })
