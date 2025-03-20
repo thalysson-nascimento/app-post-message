@@ -153,10 +153,6 @@ export class DialogContent implements OnInit {
         postMessageAction.createPostMessage({ postMessage: newPostMessage })
       );
 
-      this.store.dispatch(
-        postMessageAction.createPostMessage({ postMessage: newPostMessage })
-      );
-
       this.dialogRef.close();
     }
   }
