@@ -1,4 +1,4 @@
-<mat-toolbar>
+<mat-toolbar *ngIf="!isMobile">
   <span>Post Message</span>
   <section class="space-left">
     <div class="example-button-row">
@@ -8,6 +8,40 @@
   </section>
 </mat-toolbar>
 
-<div class="contain-body">
+<mat-drawer-container class="example-container" autosize *ngIf="isMobile">
+  <mat-drawer #drawer class="contain-sidenav" mode="side">
+    <div class="contain-title">
+      <span class="title-app">Post Message</span>
+    </div>
+    <mat-list>
+      <mat-list-item [routerLink]="['/home']" (click)="drawer.toggle()"
+        >Home</mat-list-item
+      >
+      <mat-divider></mat-divider>
+      <mat-list-item [routerLink]="['/message']" (click)="drawer.toggle()"
+        >Post Message</mat-list-item
+      >
+      <mat-divider></mat-divider>
+    </mat-list>
+  </mat-drawer>
+
+  <div class="example-sidenav-content">
+    <mat-toolbar>
+      <div class="contain-icon-menu">
+        <mat-icon
+          (click)="drawer.toggle()"
+          aria-hidden="false"
+          fontIcon="menu"
+        ></mat-icon>
+      </div>
+    </mat-toolbar>
+  </div>
+
+  <div class="contain-body">
+    <router-outlet></router-outlet>
+  </div>
+</mat-drawer-container>
+
+<div class="contain-body" *ngIf="!isMobile">
   <router-outlet></router-outlet>
 </div>
