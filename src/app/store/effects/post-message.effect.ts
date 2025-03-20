@@ -1,7 +1,7 @@
 import { inject } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { map, switchMap, tap } from 'rxjs';
+import { catchError, map, of, switchMap, tap } from 'rxjs';
 import { PostMessageFirebaseService } from '../../shared/services/post-message/post-message-firebase.service';
 import { postMessageAction } from '../actions/post-message.action';
 
@@ -14,13 +14,18 @@ export const searchPostMessageEffect = createEffect(
       ofType(postMessageAction.getPostMessage),
       tap(() => console.log('searchPostMessageEffect')),
       switchMap(() =>
-        postMessageFirebaseService
-          .getPostMessage()
-          .pipe(
-            map((postMessages) =>
-              postMessageAction.postMessageLoadedSuccessfully({ postMessages })
+        postMessageFirebaseService.getPostMessage().pipe(
+          map((postMessages) =>
+            postMessageAction.getPostMessageLoadedSuccessfully({ postMessages })
+          ),
+          catchError((error) =>
+            of(
+              postMessageAction.getPostMessageLoadedWithError({
+                error: error,
+              })
             )
           )
+        )
       )
     );
   },
@@ -36,7 +41,7 @@ export const createPostMessageEffect = createEffect(
       ofType(postMessageAction.createPostMessage),
       switchMap(({ postMessage }) =>
         postMessageFirebaseService.createPostMessage(postMessage).then(() =>
-          postMessageAction.postMessageLoadedSuccessfully({
+          postMessageAction.getPostMessageLoadedSuccessfully({
             postMessages: [postMessage],
           })
         )

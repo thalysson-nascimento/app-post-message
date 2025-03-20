@@ -1,1 +1,5 @@
+<ng-container *ngIf="error$ | async as error">
+  <span class="error-message">{{ error }}</span>
+</ng-container>
+
 <app-list-message [messageList]="postMessage$ | async"> </app-list-message>
