@@ -3,7 +3,7 @@ import { PostMessage } from '../../shared/models/post-message.interface';
 
 const getPostMessage = createAction('[PostMessage] Get Post Message');
 const postMessageLoadedSuccessfully = createAction(
-  '[PostMessage] Post Message Loaded Successfully',
+  '[PostMessage] Get Post Message Loaded Successfully',
   props<{ postMessages: PostMessage[] }>()
 );
 const createPostMessage = createAction(

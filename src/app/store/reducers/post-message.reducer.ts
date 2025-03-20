@@ -43,16 +43,7 @@ export const postMessageReducer = createReducer(
     return {
       ...currentState,
       postMessages: [...currentState.postMessages, postMessage],
-      status: PostMessageStatus.SUCCESS,
+      status: PostMessageStatus.LOADING,
     };
   })
 );
-
-const response: PostMessage[] = [
-  {
-    message: 'first comment',
-    email: 'thalysson@gmail.com',
-    id: 'bUbWqfFrihMRW7v872qB',
-    createdAt: '0165165454',
-  },
-];
