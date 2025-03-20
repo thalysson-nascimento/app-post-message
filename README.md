@@ -2,6 +2,14 @@
 
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.3.
 
+## application access link
+
+application hosted on the console.firebase.google.com platform
+
+```bash
+https://deploy-app-post-message.web.app/home
+```
+
 ## Development server
 
 To start a local development server, run:
