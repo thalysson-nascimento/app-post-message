@@ -25,7 +25,7 @@ export class MessageComponent implements OnInit {
   error$!: Observable<string | null>;
 
   constructor() {
-    this.error$ = this.store.select((state) => state.postMessage.error);
+    this.error$ = this.store.select((state) => state.postMessage?.error);
   }
 
   ngOnInit() {
