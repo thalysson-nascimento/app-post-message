@@ -6,7 +6,7 @@ import {
   collectionData,
   doc,
 } from '@angular/fire/firestore';
-import { deleteDoc, updateDoc } from '@firebase/firestore';
+import { deleteDoc, orderBy, query, updateDoc } from '@firebase/firestore';
 import { Observable } from 'rxjs';
 import { PostMessage } from '../../models/post-message.interface';
 
@@ -25,7 +25,12 @@ export class PostMessageFirebaseService {
   }
 
   getPostMessage(): Observable<PostMessage[]> {
-    return collectionData(this.postMessageCollection, {
+    const postMessageQuery = query(
+      this.postMessageCollection,
+      orderBy('createdAt', 'desc')
+    );
+
+    return collectionData(postMessageQuery, {
       idField: 'id',
     }) as Observable<PostMessage[]>;
   }
