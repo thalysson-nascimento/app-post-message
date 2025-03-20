@@ -1,7 +1,10 @@
-.container {
-  max-width: 980px;
+html,
+body {
+  margin: 0;
+  padding: 0;
   width: 100%;
-  margin: 0 auto;
+  overflow-x: hidden;
+  box-sizing: border-box;
 }
 
 .space-left {
@@ -11,5 +14,65 @@
 .contain-body {
   max-width: 980px;
   margin: 0 auto;
-  padding: 16px;
+  padding: 1rem;
+  flex-grow: 1;
+  overflow-y: auto;
+  box-sizing: border-box;
+}
+
+.contain-icon-menu {
+  padding: 1rem;
+}
+
+.title-app {
+  font-size: 2rem;
+}
+
+.contain-title {
+  padding: 1rem;
+  margin-top: 2rem;
+}
+
+.contain-sidenav {
+  height: 100vh;
+  width: 250px;
+}
+
+.example-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.example-sidenav-content {
+  display: flex;
+  align-items: center;
+}
+
+.example-sidenav {
+  padding: 20px;
+}
+
+@media (max-width: 480px) {
+  .example-container {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden;
+
+    .contain-body {
+      height: 100%;
+      width: 100vw;
+      max-width: 100%;
+      padding: 16px;
+      overflow-y: auto;
+      background-color: #fff;
+      box-sizing: border-box;
+    }
+
+    mat-drawer-container {
+      max-width: 100%;
+    }
+  }
 }
