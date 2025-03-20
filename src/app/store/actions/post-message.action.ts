@@ -2,10 +2,15 @@ import { createAction, props } from '@ngrx/store';
 import { PostMessage } from '../../shared/models/post-message.interface';
 
 const getPostMessage = createAction('[PostMessage] Get Post Message');
-const postMessageLoadedSuccessfully = createAction(
-  '[PostMessage] Post Message Loaded Successfully',
+const getPostMessageLoadedSuccessfully = createAction(
+  '[PostMessage] Get Post Message Loaded Successfully',
   props<{ postMessages: PostMessage[] }>()
 );
+export const getPostMessageLoadedWithError = createAction(
+  '[PostMessage] Load PostMessage Failed',
+  props<{ error: string }>()
+);
+
 const createPostMessage = createAction(
   '[PostMessage] Create Post Message',
   props<{ postMessage: PostMessage }>()
@@ -13,6 +18,7 @@ const createPostMessage = createAction(
 
 export const postMessageAction = {
   getPostMessage,
-  postMessageLoadedSuccessfully,
+  getPostMessageLoadedSuccessfully: getPostMessageLoadedSuccessfully,
+  getPostMessageLoadedWithError: getPostMessageLoadedWithError,
   createPostMessage,
 };

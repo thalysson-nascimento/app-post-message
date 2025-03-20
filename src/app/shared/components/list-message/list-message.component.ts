@@ -1,4 +1,4 @@
-import { DatePipe } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -7,7 +7,6 @@ import {
   OnInit,
   ViewChild,
   inject,
-  model,
   signal,
 } from '@angular/core';
 import {
@@ -38,13 +37,15 @@ import {
 } from '@angular/material/progress-spinner';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
 import { postMessageAction } from '../../../store/actions/post-message.action';
+import { selectLoading } from '../../../store/selectors/post-message.selector';
 import { PostMessage } from '../../models/post-message.interface';
 
-export interface DialogData {
-  animal: string;
-  name: string;
-}
+// export interface DialogData {
+//   animal: string;
+//   name: string;
+// }
 
 const MaterialModule = [
   MatTableModule,
@@ -52,9 +53,10 @@ const MaterialModule = [
   MatCardModule,
   MatButtonModule,
   MatDialogModule,
+  MatProgressSpinnerModule,
 ];
 
-const CoreModule = [DatePipe];
+const CoreModule = [DatePipe, CommonModule];
 
 @Component({
   selector: 'app-list-message',
@@ -69,13 +71,22 @@ export class ListMessageComponent implements AfterViewInit {
       this.dataSource.data = messages;
     }
   }
+  store: Store = inject(Store);
   displayedColumns: string[] = ['userId', 'email', 'message', 'date'];
   dataSource = new MatTableDataSource<PostMessage>([]);
-  readonly animal = signal('');
-  readonly name = model('');
   readonly dialog = inject(MatDialog);
+  isLoading$: Observable<boolean>;
 
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatPaginator, { static: false }) paginator!: MatPaginator;
+  constructor() {
+    this.isLoading$ = this.store.select(selectLoading);
+  }
+
+  ngAfterViewChecked() {
+    if (this.paginator && this.dataSource.paginator !== this.paginator) {
+      this.dataSource.paginator = this.paginator;
+    }
+  }
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
@@ -105,7 +116,7 @@ export class ListMessageComponent implements AfterViewInit {
 })
 export class DialogContent implements OnInit {
   readonly dialogRef = inject(MatDialogRef<DialogContent>);
-  readonly data = inject<DialogData>(MAT_DIALOG_DATA);
+  readonly data = inject<PostMessage>(MAT_DIALOG_DATA);
   readonly email = new FormControl('', [Validators.required, Validators.email]);
   protected readonly value = signal('');
   errorMessage = signal('');

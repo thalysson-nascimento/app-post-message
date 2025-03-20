@@ -11,7 +11,7 @@ enum PostMessageStatus {
 
 export interface PostMessageState {
   postMessages: PostMessage[];
-  error: '' | null;
+  error: string | null;
   status: PostMessageStatus;
 }
 
@@ -30,7 +30,7 @@ export const postMessageReducer = createReducer(
     };
   }),
   on(
-    postMessageAction.postMessageLoadedSuccessfully,
+    postMessageAction.getPostMessageLoadedSuccessfully,
     (state, { postMessages }) => {
       return {
         ...state,
@@ -39,6 +39,20 @@ export const postMessageReducer = createReducer(
       };
     }
   ),
+  on(postMessageAction.getPostMessageLoadedWithError, (state, { error }) => {
+    return {
+      ...state,
+      error: error || null,
+      status: PostMessageStatus.ERROR,
+    };
+  }),
+  on(postMessageAction.createPostMessage, (currentState, { postMessage }) => {
+    return {
+      ...currentState,
+      postMessages: [...currentState.postMessages, postMessage],
+      status: PostMessageStatus.LOADING,
+    };
+  }),
   on(postMessageAction.createPostMessage, (currentState, { postMessage }) => {
     return {
       ...currentState,
@@ -47,12 +61,3 @@ export const postMessageReducer = createReducer(
     };
   })
 );
-
-const response: PostMessage[] = [
-  {
-    message: 'first comment',
-    email: 'thalysson@gmail.com',
-    id: 'bUbWqfFrihMRW7v872qB',
-    createdAt: '0165165454',
-  },
-];
