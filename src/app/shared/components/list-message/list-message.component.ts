@@ -82,14 +82,7 @@ export class ListMessageComponent implements AfterViewInit {
   }
 
   openDialog(): void {
-    const dialogRef = this.dialog.open(DialogContent);
-
-    dialogRef.afterClosed().subscribe((result) => {
-      console.log('The dialog was closed');
-      if (result !== undefined) {
-        this.animal.set(result);
-      }
-    });
+    this.dialog.open(DialogContent);
   }
 }
 
@@ -129,6 +122,7 @@ export class DialogContent implements OnInit {
   }
 
   onNoClick(): void {
+    this.createMessageFormGroup.reset();
     this.dialogRef.close();
   }
 
