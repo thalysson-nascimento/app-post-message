@@ -16,9 +16,21 @@ const createPostMessage = createAction(
   props<{ postMessage: PostMessage }>()
 );
 
+const deletePostMessage = createAction(
+  '[PostMessage] Delete Post Message',
+  props<{ idPostMessage: string }>()
+);
+
+export const deletePostMessageFailure = createAction(
+  '[PostMessage] Delete PostMessage Failed',
+  props<{ error: string }>()
+);
+
 export const postMessageAction = {
   getPostMessage,
   getPostMessageLoadedSuccessfully: getPostMessageLoadedSuccessfully,
   getPostMessageLoadedWithError: getPostMessageLoadedWithError,
   createPostMessage,
+  deletePostMessage,
+  deletePostMessageFailure,
 };

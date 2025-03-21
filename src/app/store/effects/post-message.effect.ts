@@ -1,7 +1,7 @@
 import { inject } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, map, of, switchMap, tap } from 'rxjs';
+import { catchError, from, map, of, switchMap, tap } from 'rxjs';
 import { PostMessageFirebaseService } from '../../shared/services/post-message/post-message-firebase.service';
 import { postMessageAction } from '../actions/post-message.action';
 
@@ -65,4 +65,50 @@ export const showSuccessSnackbarEffect = createEffect(
     );
   },
   { functional: true, dispatch: false }
+);
+
+export const deletePostMessageEffect = createEffect(
+  (
+    action$ = inject(Actions),
+    postMessageFirebaseService = inject(PostMessageFirebaseService),
+    snackBar = inject(MatSnackBar)
+  ) => {
+    return action$.pipe(
+      ofType(postMessageAction.deletePostMessage),
+      switchMap(({ idPostMessage }) =>
+        from(postMessageFirebaseService.deletePostMessage(idPostMessage)).pipe(
+          switchMap(() =>
+            postMessageFirebaseService.getPostMessage().pipe(
+              map((postMessages) =>
+                postMessageAction.getPostMessageLoadedSuccessfully({
+                  postMessages,
+                })
+              ),
+              catchError((error) =>
+                of(
+                  postMessageAction.getPostMessageLoadedWithError({
+                    error: error,
+                  })
+                )
+              )
+            )
+          ),
+          catchError((error) => {
+            snackBar.open('Error deleting message', 'Close', {
+              duration: 3000,
+              horizontalPosition: 'end',
+              verticalPosition: 'top',
+            });
+
+            return of(
+              postMessageAction.deletePostMessageFailure({
+                error: error.message,
+              })
+            );
+          })
+        )
+      )
+    );
+  },
+  { functional: true }
 );
