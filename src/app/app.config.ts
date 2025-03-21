@@ -9,6 +9,7 @@ import { routes } from './app.routes';
 import { appReducers } from './state/app.reducers';
 import {
   createPostMessageEffect,
+  deletePostMessageEffect,
   searchPostMessageEffect,
   showSuccessSnackbarEffect,
 } from './store/effects/post-message.effect';
@@ -33,6 +34,7 @@ export const appConfig: ApplicationConfig = {
       searchPostMessageEffect,
       createPostMessageEffect,
       showSuccessSnackbarEffect,
+      deletePostMessageEffect,
     }),
   ],
 };

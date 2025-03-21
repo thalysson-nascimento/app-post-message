@@ -59,5 +59,23 @@ export const postMessageReducer = createReducer(
       postMessages: [...currentState.postMessages, postMessage],
       status: PostMessageStatus.SUCCESS,
     };
+  }),
+  on(postMessageAction.deletePostMessage, (currentState) => {
+    return {
+      ...currentState,
+      status: PostMessageStatus.LOADING,
+    };
+  }),
+  on(postMessageAction.deletePostMessage, (currentState) => {
+    return {
+      ...currentState,
+      status: PostMessageStatus.SUCCESS,
+    };
+  }),
+  on(postMessageAction.deletePostMessageFailure, (currentState) => {
+    return {
+      ...currentState,
+      status: PostMessageStatus.ERROR,
+    };
   })
 );

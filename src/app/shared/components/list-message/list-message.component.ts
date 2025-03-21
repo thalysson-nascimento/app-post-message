@@ -29,6 +29,7 @@ import {
   MatDialogTitle,
 } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import {
@@ -42,11 +43,6 @@ import { postMessageAction } from '../../../store/actions/post-message.action';
 import { selectLoading } from '../../../store/selectors/post-message.selector';
 import { PostMessage } from '../../models/post-message.interface';
 
-// export interface DialogData {
-//   animal: string;
-//   name: string;
-// }
-
 const MaterialModule = [
   MatTableModule,
   MatPaginatorModule,
@@ -54,6 +50,7 @@ const MaterialModule = [
   MatButtonModule,
   MatDialogModule,
   MatProgressSpinnerModule,
+  MatIconModule,
 ];
 
 const CoreModule = [DatePipe, CommonModule];
@@ -72,10 +69,12 @@ export class ListMessageComponent implements AfterViewInit {
     }
   }
   store: Store = inject(Store);
-  displayedColumns: string[] = ['userId', 'email', 'message', 'date'];
+  displayedColumns: string[] = ['userId', 'email', 'message', 'date', 'delete'];
   dataSource = new MatTableDataSource<PostMessage>([]);
   readonly dialog = inject(MatDialog);
   isLoading$: Observable<boolean>;
+  postMessage$ = this.store.select(postMessageSelector);
+  loading$ = this.store.select(selectLoading);
 
   @ViewChild(MatPaginator, { static: false }) paginator!: MatPaginator;
   constructor() {
@@ -94,6 +93,10 @@ export class ListMessageComponent implements AfterViewInit {
 
   openDialog(): void {
     this.dialog.open(DialogContent);
+  }
+
+  deleteMessage(idPostMessage: string) {
+    this.store.dispatch(postMessageAction.deletePostMessage({ idPostMessage }));
   }
 }
 
@@ -165,4 +168,7 @@ export class DialogContent implements OnInit {
   protected onInput(event: Event) {
     this.value.set((event.target as HTMLInputElement).value);
   }
+}
+function postMessageSelector(state: object): unknown {
+  throw new Error('Function not implemented.');
 }
